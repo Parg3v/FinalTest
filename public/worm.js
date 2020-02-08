@@ -1,4 +1,6 @@
-class Worm extends LivingCreature{
+var LivingCreature = require("./LivingCreature")
+
+module.exports = class Worm extends LivingCreature{
     constructor(x, y, index){
         super(x, y, index);
 
@@ -23,8 +25,10 @@ class Worm extends LivingCreature{
 
     move() {
         this.getNewCoordinates()
-        var EmptyCells = random(this.chooseCell(0));
-        var grCells = random(this.chooseCell(1));
+        var newCll = this.chooseCell(0);
+        var EmptyCells = newCll[Math.floor(Math.random() * newCll.length)];
+        var grCell = this.chooseCell(1);
+        var grCells = grCell[Math.floor(Math.random() * grCell.length)];
         if (grCells) {
             var newX = grCells[0];
             var newY = grCells[1];

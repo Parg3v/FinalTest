@@ -1,26 +1,19 @@
-class GrassEater extends LivingCreature {
+var LivingCreature = require("./LivingCreature")
+
+
+module.exports = class GrassEater extends LivingCreature {
     constructor(x, y, index) {
         super(x, y, index)
         this.energy = 8;
     }
 
-    getNewCoordinates() {
-        this.directions = [
-            [this.x - 1, this.y - 1],
-            [this.x, this.y - 1],
-            [this.x + 1, this.y - 1],
-            [this.x - 1, this.y],
-            [this.x + 1, this.y],
-            [this.x - 1, this.y + 1],
-            [this.x, this.y + 1],
-            [this.x + 1, this.y + 1]
-        ];
-    }
+    
 
     mul() {
         this.getNewCoordinates()
         this.multiply++;
-        var newCell = random(this.chooseCell(0));
+        var newCll = this.chooseCell(0);
+        var newCell = newCll[Math.floor(Math.random() * newCll.length)];
         if (this.multiply >= 8 && newCell) {
 
             var newGrassEater = new GrassEater(newCell[0], newCell[1], this.index);
@@ -31,16 +24,13 @@ class GrassEater extends LivingCreature {
         }
     }
 
-    chooseCell(character) {
-        this.getNewCoordinates();
-        return super.chooseCell(character);
-    }
+   
  
 
     move() {
         this.getNewCoordinates()
         var emptyCells = this.chooseCell(0);
-        var newCell = random(emptyCells);
+        var newCell = emptyCells[Math.floor(Math.random() * emptyCells.length)];
         if (newCell) {
             this.energy--;
             var newX = newCell[0];
@@ -56,13 +46,8 @@ class GrassEater extends LivingCreature {
     eat() {
         this.getNewCoordinates()
         var GrCells = this.chooseCell(1);
-        var newCell = random(GrCells);
+        var newCell = GrCells[Math.floor(Math.random() * GrCells.length)];        
         if (newCell) {
-            // sound
-            if (!NoSounds) {
-                grEaterSounds.setVolume(0.1 * volume);
-                grEaterSounds.play();
-            }
             var newX = newCell[0];
             var newY = newCell[1];
             matrix[newY][newX] = 2;

@@ -1,11 +1,9 @@
-class Predator {
+var LivingCreature = require("./LivingCreature")
+
+module.exports = class Predator extends LivingCreature {
     constructor(x, y, index) {
-        this.x = x;
-        this.y = y;
+        super(x, y, index)
         this.energy = 8;
-        this.index = index;
-        this.multiply = 0;
-        this.directions = [];
     }
 
     getNewCoordinates() {
@@ -24,7 +22,8 @@ class Predator {
     mul() {
         this.getNewCoordinates()
         this.multiply++;
-        var newCell = random(this.chooseCell(0));
+        var newCll = this.chooseCell(0);
+        var newCell = newCll[Math.floor(Math.random() * newCll.length)];
         if (this.multiply >= 8 && newCell) {
 
             var newPredator = new Predator(newCell[0], newCell[1], this.index);
@@ -35,26 +34,14 @@ class Predator {
         }
     }
 
-    chooseCell(character) {
-        this.getNewCoordinates()
-        var found = [];
-        for (var i in this.directions) {
-            var x = this.directions[i][0];
-            var y = this.directions[i][1];
-            if (x >= 0 && x < matrix[0].length && y >= 0 && y < matrix.length) {
-                if (matrix[y][x] == character) {
-                    found.push(this.directions[i]);
-                }
-            }
-
-        } return found;
-
-    }
+    
 
     move() {
         this.getNewCoordinates()
-        var newCell = random(this.chooseCell(0));
-        var grCells = random(this.chooseCell(1));
+        var newCll = this.chooseCell(0);
+        var newCell = newCll[Math.floor(Math.random() * newCll.length)];
+        var grcll = this.chooseCell(0);
+        var grCells = grcll[Math.floor(Math.random() * grcll.length)];
         if (newCell) {
             this.energy--;
             var newX = newCell[0];
@@ -78,14 +65,14 @@ class Predator {
     eat() {
         this.getNewCoordinates()
         var GrEaterCells = this.chooseCell(2);
-        var newCell = random(GrEaterCells);
+        var newCell = GrEaterCells[Math.floor(Math.random() * GrEaterCells.length)];
         if (newCell) {
 
-            // sounds
-            if (!NoSounds) {
-                pred.setVolume(0.5 * volume);
-                pred.play();
-            }
+            // // sounds
+            // if (!NoSounds) {
+            //     pred.setVolume(0.5 * volume);
+            //     pred.play();
+            // }
 
             var newX = newCell[0];
             var newY = newCell[1];

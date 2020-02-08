@@ -1,11 +1,15 @@
-class Destroyer extends LivingCreature {
+var LivingCreature = require("./LivingCreature")
+
+module.exports = class Destroyer extends LivingCreature {
     constructor(x, y, index) {
         super(x, y, index);
         this.energy = 8;
         this.color = "#0051ff";
         this.time = 0;
-        this.id = random(1, 3);
-        this.id = parseInt(this.id);
+        this.id = Math.floor(Math.random() * (3 - 1) + 1);
+        // var a = arr[Math.floor(Math.random() * arr.length)];
+
+
     }
 
     getNewCoordinates() {
@@ -29,11 +33,11 @@ class Destroyer extends LivingCreature {
             this.color = "#0095ff"
         } else if (this.time == 20) {
 
-            //sounds
-            if (!NoSounds) {
-                destSounds.setVolume(20 * volume);
-                destSounds.play();
-            }
+            // //sounds
+            // if (!NoSounds) {
+            //     destSounds.setVolume(20 * volume);
+            //     destSounds.play();
+            // }
 
 
             this.color = "#00aeff";
@@ -42,10 +46,7 @@ class Destroyer extends LivingCreature {
         }
     }
 
-    chooseCell(character) {
-        this.getNewCoordinates();
-        return super.chooseCell(character);
-    }
+   
 
     move() {
         this.getNewCoordinates()

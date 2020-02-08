@@ -1,4 +1,6 @@
-class Hole extends LivingCreature {
+var LivingCreature = require("./LivingCreature") 
+
+module.exports = class Hole extends LivingCreature {
     constructor(x, y, index) {
         super(x, y, index);
 
@@ -18,11 +20,19 @@ class Hole extends LivingCreature {
 
     eat() {
         this.getNewCoordinates()
-        var Cells = this.chooseCell(1, 6);
-        var newCell = random(Cells);
-        if (newCell) {
-            var newX = newCell[0];
-            var newY = newCell[1];
+        var Cells = this.chooseCell(0);
+        var cl1 = this.chooseCell(1);
+        for (var i = 1; i <= 6; i++) {
+            if (!cl1) {
+                var cl1 = this.chooseCell(i);
+            }else{
+                var cl = cl1[Math.floor(Math.random() * cl1.length)];
+            }
+        }
+        var newCell = Cells[Math.floor(Math.random() * Cells.length)];
+        if (!newCell && cl) {
+            var newX = cl[0];
+            var newY = cl[1];
             matrix[newY][newX] = 0;
 
             for (var i in grEaterArr) {

@@ -1,4 +1,8 @@
-class Box extends LivingCreature {
+var LivingCreature = require("./LivingCreature")
+var Predator = require('./Predator')
+var GrassEater = require('./GrassEater')
+var Grass = require('./Grass')
+module.exports = class Box extends LivingCreature {
     constructor(x, y, index) {
         super(x, y, index);
         this.time = 0;
@@ -21,24 +25,24 @@ class Box extends LivingCreature {
     Generate() {
         this.getNewCoordinates();
         this.time++;
-        if (this.time == 1 && !NoSounds) {
-            box1.setVolume(0.01 * volume);
-            box1.play();
+        if (this.time == 1 /*&& !script.NoSounds*/) {
+            // box1.setVolume(0.01 * volume);
+            // box1.play();
         } else if (this.time < 10) {
             this.color = "red";
         }
         else if (this.time == 10) {
-            if (!NoSounds) {
-                box2.setVolume(0.01 * volume);
-                box2.play();
-            }
+            // if (!NoSounds) {
+            //     box2.setVolume(0.01 * volume);
+            //     box2.play();
+            // }
             this.color = "orange";
         }
         else if (this.time == 20) {
-            if (!NoSounds) {
-                box3.setVolume(0.01 * volume);
-                box3.play();
-            }
+            // if (!NoSounds) {
+            //     box3.setVolume(0.01 * volume);
+            //     box3.play();
+            // }
             this.color = "yellow";
         }
         else if (this.time >= 30) {
@@ -48,16 +52,15 @@ class Box extends LivingCreature {
 
     }
 
-    chooseCell(character) {
-        this.getNewCoordinates();
-        return super.chooseCell(character);
-    }
-
+    
     Randoming() {
-        var newCell = random(this.chooseCell(0));
-        var newCellGrass = random(this.chooseCell(1));
+        var newCll = this.chooseCell(0);
+        var newCell = newCll[Math.floor(Math.random() * newCll.length)];
+        var newCellGras = this.chooseCell(1);
+        var newCellGrass = newCellGras[Math.floor(Math.random() * newCellGras.length)];
+        
         if (newCell) {
-            var char = random(1, 4);
+            var char = Math.floor(Math.random() * (4 - 1) + 1);
 
             char = parseInt(char);
 
@@ -87,7 +90,7 @@ class Box extends LivingCreature {
 
 
         else if (newCellGrass) {
-            var char = random(1, 4);
+            var char = Math.floor(Math.random() * (3 - 1) + 1);
 
             char = parseInt(char);
 

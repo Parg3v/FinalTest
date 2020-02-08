@@ -1,55 +1,9 @@
 // matrix
 
-matrix = [];
-for (var a = 0; a < 25; a++) {
-    matrix[a] = []
-    for (var b = 0; b < 25; b++) {
-        matrix[a][b] = 0
-    }
-}
-var n = 0;
-for (var i = 1; i < 6; i++) {
-    var d;
-    switch (i) {
-        case 1:
-            d = 100;
-            break;
-        case 2:
-            d = 1;
-            break;
-        case 3:
-            d = 1;
-            break;
-        case 4:
-            d = 2;
-            break;
-        case 5:
-            d = 1;
-            break;
-        case 6:
-            d = 1;
-            break;
-        case 7:
-            d = 1;
-            break;
-        default:
-            break;
-    }
 
-    while (n < d) {
-        var x = Math.floor(Math.random() * 20);
-        var y = Math.floor(Math.random() * 20);
-        if (matrix[y][x] == 0) {
-            matrix[y][x] = i;
-            n++;
-        }
-
-    }
-    n = 0;
-}
 
 var music;
-
+var socket = io();
 var side = 20;
 
 var snow = false;
@@ -59,13 +13,6 @@ var clrsGrassSnow = ["#edf1f2", "#b5ebff", "#b5d0ff"]
 
 
 // Arrays
-var predatorArr = [];
-var grassArr = [];
-var grEaterArr = [];
-var boxArr = [];
-var DestArr = [];
-var WormArr = [];
-var HoleArr = [];
 
 var grEaterSounds;
 var destSounds;
@@ -97,45 +44,19 @@ function preload() {
 
 function setup() {
     frameRate(10);
-    createCanvas(matrix.length * side, matrix.length * side);
+    createCanvas(25 * side, 25 * side);
     background('#acacac');
 
-    for (var y = 0; y < matrix.length; ++y) {
-        for (var x = 0; x < matrix[y].length; ++x) {
-            if (matrix[y][x] == 1) {
-                var gr = new Grass(x, y, 1);
-                grassArr.push(gr);
-            }
-            else if (matrix[y][x] == 2) {
-                var grEater = new GrassEater(x, y, 2);
-                grEaterArr.push(grEater);
-            }
-            else if (matrix[y][x] == 3) {
-                var predator = new Predator(x, y, 3);
-                predatorArr.push(predator);
-            }
-            else if (matrix[y][x] == 4) {
-                var box = new Box(x, y, 4);
-                boxArr.push(box);
-            }
-            else if (matrix[y][x] == 5) {
-                var destroyer = new Destroyer(x, y, 5);
-                DestArr.push(destroyer);
-            }
-            else if (matrix[y][x] == 6) {
-                var worm = new Worm(x, y, 6);
-                WormArr.push(worm);
-            }
-            else if (matrix[y][x] == 7) {
-                var blhole = new Hole(x, y, 7);
-                HoleArr.push(blhole);
-            }
-        }
-    }
+
 
 }
+socket.on("start", update);
 
-function draw() {
+
+function update(obj) {
+    matrix = obj.m
+    boxArr = obj.box
+    DestArr = obj.dest
     for (var y = 0; y < matrix.length; y++) {
         for (var x = 0; x < matrix[y].length; x++) {
             if (matrix[y][x] == 1) {
@@ -155,7 +76,7 @@ function draw() {
                 fill(DestArr[0].color);
             } else if (matrix[y][x] == 6) {
                 fill("#a13e00");
-            } else if(matrix[y][x] == 7){
+            } else if (matrix[y][x] == 7) {
                 fill("#000000");
             }
             else if (matrix[y][x] == 0) {
@@ -164,76 +85,4 @@ function draw() {
             rect(x * side, y * side, side, side);
         }
     }
-
-    for (var i in grassArr) {
-        grassArr[i].mul();
-    }
-    for (var i in grEaterArr) {
-        grEaterArr[i].eat();
-    }
-    for (var i in predatorArr) {
-        predatorArr[i].eat();
-    }
-    for (var i in WormArr) {
-        WormArr[i].move();
-    }
-    for (var i in HoleArr) {
-        HoleArr[i].eat();
-    }
-    for (var i in boxArr) {
-        boxArr[i].Generate();
-    }
-    for (var i in DestArr) {
-        DestArr[i].starting();
-    }
-
-    var n = random(0, 25);
-    n = parseInt(n);
-
-    var m = random(0, 25);
-    m = parseInt(m);
-
-    if (grassArr.length <= 10 && matrix[n][m] != 4) {
-        var gr = new Grass(n, m, 1);
-        grassArr.push(gr);
-    }
-    if (grEaterArr.length <= 3 && matrix[n][m] != 4) {
-        var grEater = new GrassEater(n, m, 2);
-        grEaterArr.push(grEater);
-    }
-    if (predatorArr.length <= 2 && matrix[n][m] != 4) {
-        var predator = new Predator(n, m, 3);
-        predatorArr.push(predator);
-    }
-    if (WormArr.length < 2 && matrix[n][m] != 4) {
-        var worm = new Worm(n, m, 6);
-        WormArr.push(worm);
-    }
-
-
-    if (HoleArr.length == 0) {
-        var hole = new Hole(n, m, 1);
-        HoleArr.push(hole);
-    }
-    if (predatorArr.length >= 10) {
-        predatorArr.length == 3;
-    }
-
-    if (DestArr.length == 0) {
-        var n = random(1, 10)
-        n = parseInt(n);
-        if (n == 1) {
-            var destroyer = new Destroyer(n, m, 5);
-            DestArr.push(destroyer);
-        }
-    }
-
-    if (!music.isPlaying() && !NoSounds) {
-        music.setVolume(0.1 * MSCvolume);
-        music.play();
-    }
-    if (NoSounds) {
-        music.stop();
-    }
-
 }
