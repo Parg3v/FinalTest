@@ -2,6 +2,7 @@ var express = require('express');
 var app = express();
 var server = require('http').createServer(app);
 var io = require('socket.io')(server);
+var fs = require("fs");
 
 // Classes
 var GrassEater = require('./public/GrassEater');
@@ -10,7 +11,7 @@ var Predator = require("./public/Predator");
 var Box = require("./public/Box");
 var Destroyer = require("./public/Destroyer");
 var Worm = require("./public/worm");
-var Hole = require("./public/blackHole");
+var Mouse = require("./public/mouse");
 
 // Arrays
 predatorArr = [];
@@ -19,7 +20,8 @@ grEaterArr = [];
 boxArr = [];
 DestArr = [];
 WormArr = [];
-HoleArr = [];
+mouseArr = [];
+
 
 // Matrix
 matrix = [];
@@ -73,10 +75,13 @@ for (var i = 1; i < 6; i++) {
 app.use(express.static("public"));
 
 app.get('/', function (req, res) {
-   res.redirect('index.html');
+    res.redirect('index.html');
 });
 
-server.listen(3000);
+server.listen(3000, "localhost", function () {
+    console.log("Started");
+
+});
 
 for (var y = 0; y < matrix.length; ++y) {
     for (var x = 0; x < matrix[y].length; ++x) {
@@ -105,20 +110,17 @@ for (var y = 0; y < matrix.length; ++y) {
             WormArr.push(worm);
         }
         else if (matrix[y][x] == 7) {
-            var blhole = new Hole(x, y, 7);
-            HoleArr.push(blhole);
+            var mouse = new Mouse(x, y, 7);
+            mouseArr.push(mouse);
         }
     }
 }
 
-// uxarkac popoxakanner
-var obj = {
-    m: matrix,
-    box: boxArr,
-    dest: DestArr
-}
+
 // func --> script.js(draw-i poxaren)
-function main(){
+function main() {
+
+
     for (var i in grassArr) {
         grassArr[i].mul();
     }
@@ -128,11 +130,11 @@ function main(){
     for (var i in predatorArr) {
         predatorArr[i].eat();
     }
+    for (var i in mouseArr) {
+        mouseArr[i].eat();
+    }
     for (var i in WormArr) {
         WormArr[i].move();
-    }
-    for (var i in HoleArr) {
-        HoleArr[i].eat();
     }
     for (var i in boxArr) {
         boxArr[i].Generate();
@@ -161,11 +163,9 @@ function main(){
         var worm = new Worm(n, m, 6);
         WormArr.push(worm);
     }
-
-
-    if (HoleArr.length == 0) {
-        var hole = new Hole(1, 1, 7);
-        HoleArr.push(hole);
+    if (mouseArr.length < 1 && matrix[n][m] != 4) {
+        var mouse = new Mouse(n, m, 7);
+        mouseArr.push(mouse);
     }
     if (predatorArr.length >= 10) {
         predatorArr.length == 3;
@@ -179,17 +179,25 @@ function main(){
         }
     }
 
-    // if (!music.isPlaying() && !NoSounds) {
-    //     music.setVolume(0.1 * MSCvolume);
-    //     music.play();
-    // }
-    // if (NoSounds) {
-    //     music.stop();
-    // }
+    fs.writeFileSync("./data/data1.json", JSON.stringify(grassArr));
+    fs.writeFileSync("./data/data2.json", JSON.stringify(grEaterArr));
+    fs.writeFileSync("./data/data3.json", JSON.stringify(predatorArr));
+    fs.writeFileSync("./data/data4.json", JSON.stringify(boxArr));
+    fs.writeFileSync("./data/data5.json", JSON.stringify(DestArr));
+    fs.writeFileSync("./data/data6.json", JSON.stringify(WormArr));
+    fs.writeFileSync("./data/data7.json", JSON.stringify(mouseArr));
+
     io.sockets.emit("start", obj);
 }
+
+// uxarkac popoxakanner
+var obj = {
+    m: matrix,
+    box: boxArr,
+    dest: DestArr
+}
 // FPS
-setInterval(main, 500);
+setInterval(main, 1000);
 
 
 

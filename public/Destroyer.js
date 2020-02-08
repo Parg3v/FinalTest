@@ -51,7 +51,7 @@ module.exports = class Destroyer extends LivingCreature {
     move() {
         this.getNewCoordinates()
         var emptyCells = this.chooseCell(0);
-        var newCell = random(emptyCells);
+        var newCell = emptyCells[Math.floor(Math.random() * emptyCells.length)];
         if (newCell) {
             this.energy--;
             var newX = newCell[0];
@@ -69,7 +69,7 @@ module.exports = class Destroyer extends LivingCreature {
         var GrCells = this.chooseCell(this.id);
 
         if (this.id == 1) {
-            var newCell = random(GrCells);
+            var newCell = GrCells[Math.floor(Math.random() * GrCells.length)];
             if (newCell) {
                 var newX = newCell[0];
                 var newY = newCell[1];
@@ -91,7 +91,7 @@ module.exports = class Destroyer extends LivingCreature {
             }
         } else if (this.id == 2) {
             var GrEaterCells = this.chooseCell(2);
-            var newCell = random(GrEaterCells);
+            var newCell = GrEaterCells[Math.floor(Math.random() * GrEaterCells.length)];
             if (newCell) {
                 var newX = newCell[0];
                 var newY = newCell[1];

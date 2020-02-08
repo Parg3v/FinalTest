@@ -1,7 +1,8 @@
-var LivingCreature = require("./LivingCreature")
+var LivingCreature = require("./LivingCreature");
+var Grass = require("./Grass");
 
-module.exports = class Worm extends LivingCreature{
-    constructor(x, y, index){
+module.exports = class Worm extends LivingCreature {
+    constructor(x, y, index) {
         super(x, y, index);
 
     }
@@ -36,8 +37,11 @@ module.exports = class Worm extends LivingCreature{
             matrix[this.y][this.x] = 1;
             this.x = newX;
             this.y = newY;
-        }else if(EmptyCells){
+        } else if (EmptyCells) {
+            var newGrass = new Grass(EmptyCells[0], EmptyCells[1], 1);
+            grassArr.push(newGrass);
             matrix[EmptyCells[1]][EmptyCells[0]] = 1;
+
         }
 
     }

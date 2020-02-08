@@ -30,6 +30,9 @@
       #worm {
          background-color: #a13e00;
       }
+      #mouse{
+         background-color: #595757;
+      }
 
       div {
          display: inline-block;
@@ -67,12 +70,6 @@
 </head>
 
 <body>
-   <script src="/socket.io/socket.io.js"></script>
-   <script src="p5.js"></script>
-   <script src="script.js"></script>
-   <script src="p5.js-sound-master/lib/p5.sound.js"></script>
-
-
    <table>
       <tr id="first">
          <td class="alice"></td>
@@ -235,8 +232,45 @@
             <p>Իր շուրջը խոտ է ստեղծում</p>
          </td>
       </tr>
+
+      <tr>
+         <td id="mouse"></td>
+         <td>
+            <p>Մոխրագույն</p>
+         </td>
+         <td>
+            <p>Մուկ</p>
+         </td>
+         <td>
+            <p>-</p>
+         </td>
+         <td>
+            <p>-</p>
+         </td>
+         <td>
+            <p>-</p>
+         </td>
+         <td>
+            <p>Ուտում է Ճիճու</p>
+         </td>
+      </tr>
    </table>
    <br>
+
+
+   <button id="winter">Winter</button>
+   <button id="spring">Spring</button>
+   <button id="summer">Summer</button>
+   <button id="autumn">Autumn</button>
+   <script src="/socket.io/socket.io.js"></script>
+   <script src="p5.js"></script>
+   <script src="script.js"></script>
+   <script src="../server.js"></script>
+   <script src="p5.js-sound-master/lib/p5.sound.js"></script>
+
+
+   
+
 </body>
 
 </html>
