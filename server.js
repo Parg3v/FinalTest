@@ -1,3 +1,5 @@
+//   Ete chi bacum uxaki refresh areq chrom-@
+
 var express = require('express');
 var app = express();
 var server = require('http').createServer(app);
@@ -25,6 +27,9 @@ mouseArr = [];
 
 // Matrix
 matrix = [];
+
+seasons = ["winter", "spring", "summer", "autumn"];
+
 for (var a = 0; a < 25; a++) {
     matrix[a] = []
     for (var b = 0; b < 25; b++) {
@@ -178,6 +183,24 @@ function main() {
             DestArr.push(destroyer);
         }
     }
+    // aranc sra chi gtni season(gitem inchem anum)
+    var season = obj.seas;
+
+    var time;
+    //   Seasons
+    if(season == "winter"){
+        for(i in mouseArr){
+            mouseArr[i].die();
+        }
+        time = 1000;
+
+    }else if(seasonNow == "spring"){
+        time = 100;
+    }else if(seasonNow == "summer"){
+        time = 200;
+    }else{
+        time = 500;
+    }
 
     fs.writeFileSync("./data/data1.json", JSON.stringify(grassArr));
     fs.writeFileSync("./data/data2.json", JSON.stringify(grEaterArr));
@@ -190,14 +213,39 @@ function main() {
     io.sockets.emit("start", obj);
 }
 
+seasonNow = SeasonChanger();
+
+
 // uxarkac popoxakanner
 var obj = {
     m: matrix,
     box: boxArr,
-    dest: DestArr
+    dest: DestArr,
+    seas: seasonNow
 }
+
+var i = 0;
+
+function SeasonChanger() {
+    var season;
+    if(i > 3){
+        i = 0;
+    }
+    season = seasons[i];
+    i++;
+    
+// es draca nram hamar vor amen angam poxvi obj-i mechi seas-@
+    obj = {
+    m: matrix,
+    box: boxArr,
+    dest: DestArr,
+    seas: season
+}
+
+    return season;
+}
+
+
 // FPS
-setInterval(main, 1000);
-
-
-
+setInterval(main, 700);
+setInterval(SeasonChanger, 5000);
